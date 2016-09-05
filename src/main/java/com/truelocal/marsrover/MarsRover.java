@@ -1,8 +1,9 @@
 package com.truelocal.marsrover;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +19,8 @@ public class MarsRover {
 
 	public static void main(String[] args) throws MarsRoverException {
 		// read from input file and store all non-empty lines in a list
-		try (BufferedReader br = new BufferedReader(new FileReader(
-				"src/main/resources/inputs.txt"))) {
+		InputStream is = MarsRover.class.getResourceAsStream("/inputs.txt");
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
 			String line;
 			List<String> inputs = new ArrayList<>();
 			while ((line = br.readLine()) != null) {
@@ -29,7 +30,7 @@ public class MarsRover {
 			}
 			if (!inputs.isEmpty()) {
 				initializePlateauUpperRightCoordinates(inputs.get(0));
-				List<String> finalPositions = new ArrayList<String>();
+				List<String> finalPositions = new ArrayList<>();
 
 				for (int i = 1, j = 1; i < inputs.size(); i += 2, j++) {
 					System.out.println("Rover " + j + " starting to explore");
@@ -44,9 +45,12 @@ public class MarsRover {
 						throw new MarsRoverException(ErrorCodes.INPUT_INVALID);
 					}
 
-				}	
+				}
+				System.out.println("******************");
 				System.out.println("Final Output");
-				finalPositions.forEach(s -> System.out.println(s));
+				for(String finalPosition : finalPositions) {
+					System.out.println(finalPosition);
+				}
 			}
 		} catch (IOException e) {
 			System.out.println(ErrorCodes.ERROR_READING_FILE.getErrorMessage());
@@ -54,8 +58,7 @@ public class MarsRover {
 		}
 	}
 
-	public static String landRover(String initialPosition, String commands, int roverNum) 
-			throws MarsRoverException {
+	public static String landRover(String initialPosition, String commands, int roverNum) {
 		String finalPosition = initialPosition;
 
 		String[] s = initialPosition.split(REGEX_SPACE_SPLITTER);
@@ -72,7 +75,7 @@ public class MarsRover {
 				if (r.getCoordinates().isWithinBounds(
 						Rover.lowerBoundaryCoordinates, Rover.upperBoundaryCoordinates)) {
 					r.explore(commands);
-					finalPosition = r.toString();					
+					finalPosition = r.toString();
 				} else {
 					System.out.println("Invalid coordinates for rover: "+ roverNum);
 				}
@@ -82,7 +85,7 @@ public class MarsRover {
 					ErrorCodes.INPUT_INVALID.getErrorMessage(), "Rover's position")
 					+ " for Rover: " + roverNum);
 		}
-		return finalPosition;	
+		return finalPosition;
 	}
 
 	private static void initializePlateauUpperRightCoordinates(
@@ -97,7 +100,7 @@ public class MarsRover {
 			System.out.println(MessageFormat.format(
 					ErrorCodes.INPUT_INVALID.getErrorMessage(),
 					"Plateau upper-right cordinates"));
-			throw new MarsRoverException(ErrorCodes.INPUT_INVALID);	
+			throw new MarsRoverException(ErrorCodes.INPUT_INVALID);
 		}
 	}
 }
