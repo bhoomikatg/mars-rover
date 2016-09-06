@@ -48,9 +48,7 @@ public class MarsRover {
 				}
 				System.out.println("******************");
 				System.out.println("Final Output");
-				for(String finalPosition : finalPositions) {
-					System.out.println(finalPosition);
-				}
+				finalPositions.forEach(finalPosition -> System.out.println(finalPosition));
 			}
 		} catch (IOException e) {
 			System.out.println(ErrorCodes.ERROR_READING_FILE.getErrorMessage());
