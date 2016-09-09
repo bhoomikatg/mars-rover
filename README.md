@@ -7,7 +7,7 @@ STEPS TO EXECUTE:
 
 1. Download the repository from github.
 2. Go to command prompt and change the path to the location where repository is downloaded.
-3. Run "mvn clean install" (maven should be present in PATH variable)
+3. Run "mvn clean install" (maven should be present in PATH variable and JAVA_HOME should point to JDK 1.8)
 4. After above command is success, run "cd target"
 5. run "java -jar  mars-rover-0.0.1-SNAPSHOT.jar", this should display the output.
 6. In order to change the inputs, change "inputs.txt" file @ /src/main/resources and repeat steps 3-5.
